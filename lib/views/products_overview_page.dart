@@ -1,29 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_estado/components/product_item.dart';
-import 'package:gerenciamento_estado/data/dummy_data.dart';
-import 'package:gerenciamento_estado/models/product.dart';
+import 'package:gerenciamento_estado/components/product_grid.dart';
+import 'package:gerenciamento_estado/models/product_list.dart';
+import 'package:provider/provider.dart';
+
+enum FilterOptions { Favorite, All }
 
 class ProductsOverviewPage extends StatelessWidget {
-  final List<Product> loadedProducts = dummyProducts;
-  ProductsOverviewPage({Key? key}) : super(key: key);
+  const ProductsOverviewPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Build ProductsOverviewPage');
+    final provider = context.read<ProductList>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Minha loja'),
+        actions: [
+          PopupMenuButton(
+            icon: const Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              const PopupMenuItem(
+                value: FilterOptions.Favorite,
+                child: Text('Somente Favoritos'),
+              ),
+              const PopupMenuItem(
+                value: FilterOptions.All,
+                child: Text('Todos'),
+              )
+            ],
+            onSelected: (FilterOptions value) {
+              if (value == FilterOptions.Favorite) {
+                provider.showFavoriteOnly();
+              } else {
+                provider.showFavoriteAll();
+              }
+            },
+          )
+        ],
       ),
-      body: GridView.builder(
-          padding: const EdgeInsets.all(10),
-          itemCount: loadedProducts.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 3 / 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10),
-          itemBuilder: ((context, index) =>
-              ProductItem(product: loadedProducts[index]))),
+      body: const ProductGrid(),
     );
   }
 }
