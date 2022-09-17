@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_estado/models/product_base.dart';
 
-class Product with ChangeNotifier {
-  final String id, title, description, imageUrl;
-  final double price;
+class Product extends ProductBase with ChangeNotifier {
+  final String description, imageUrl;
   bool isFavorite;
 
   Product(
-      {required this.id,
-      required this.title,
+      {required super.id,
+      required super.name,
       required this.description,
-      required this.price,
+      required super.price,
       required this.imageUrl,
       this.isFavorite = false});
 
