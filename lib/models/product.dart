@@ -3,7 +3,7 @@ import 'package:gerenciamento_estado/models/product_base.dart';
 
 class Product extends ProductBase with ChangeNotifier {
   final String description, imageUrl;
-  bool isFavorite;
+  bool isFavorite = false;
 
   Product(
       {required super.id,

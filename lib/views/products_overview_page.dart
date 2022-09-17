@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/components/badge.dart';
 import 'package:gerenciamento_estado/components/product_grid.dart';
+import 'package:gerenciamento_estado/utils/app_routes.dart';
 
+// ignore: constant_identifier_names
 enum FilterOptions { Favorite, All }
 
 class ProductsOverviewPage extends StatefulWidget {
@@ -48,7 +50,10 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           ),
           Badge(
               child: IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.shopping_cart))),
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.CART);
+                  },
+                  icon: const Icon(Icons.shopping_cart))),
         ],
       ),
       body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),

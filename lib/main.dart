@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/models/cart.dart';
 import 'package:gerenciamento_estado/models/product_list.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
-import 'package:gerenciamento_estado/views/app_product_detail_page.dart';
+import 'package:gerenciamento_estado/views/cart_page.dart';
+import 'package:gerenciamento_estado/views/product_detail_page.dart';
 import 'package:gerenciamento_estado/views/products_overview_page.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,10 @@ class MyApp extends StatelessWidget {
                 onSurface: Color(0xffbf1e62)),
             fontFamily: 'Lato'),
         home: const ProductsOverviewPage(),
-        routes: {AppRoutes.PRODUCT_DETAIL: (ctx) => const ProductDetailPage()},
+        routes: {
+          AppRoutes.PRODUCT_DETAIL: (_) => const ProductDetailPage(),
+          AppRoutes.CART: (_) => const CartPage()
+        },
       ),
     );
   }

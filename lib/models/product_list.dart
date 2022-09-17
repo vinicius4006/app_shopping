@@ -7,10 +7,10 @@ class ProductList with ChangeNotifier {
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
-      _items.where((prod) => prod.isFavorite).toList();
+      [..._items].where((prod) => prod.isFavorite).toList();
 
-  void addProduct(Product product) {
-    _items.add(product);
-    notifyListeners();
-  }
+  // void addProduct(Product product) {
+  //   _items.add(product);
+  //   notifyListeners();
+  // }
 }
