@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/models/cart.dart';
+import 'package:gerenciamento_estado/models/order_list.dart';
 import 'package:gerenciamento_estado/models/product_list.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
 import 'package:gerenciamento_estado/views/cart_page.dart';
+import 'package:gerenciamento_estado/views/orders_page.dart';
 import 'package:gerenciamento_estado/views/product_detail_page.dart';
 import 'package:gerenciamento_estado/views/products_overview_page.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +23,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => ProductList(),
         ),
-        ChangeNotifierProvider(create: (_) => Cart())
+        ChangeNotifierProvider(create: (_) => Cart()),
+        ChangeNotifierProvider(create: (_) => OrderList())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -40,10 +43,11 @@ class MyApp extends StatelessWidget {
                 surface: Color(0xffbf1e62),
                 onSurface: Color(0xffbf1e62)),
             fontFamily: 'Lato'),
-        home: const ProductsOverviewPage(),
         routes: {
+          AppRoutes.HOME: (_) => const ProductsOverviewPage(),
           AppRoutes.PRODUCT_DETAIL: (_) => const ProductDetailPage(),
-          AppRoutes.CART: (_) => const CartPage()
+          AppRoutes.CART: (_) => const CartPage(),
+          AppRoutes.ORDERS: (_) => const OrderPage(),
         },
       ),
     );

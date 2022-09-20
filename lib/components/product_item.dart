@@ -10,7 +10,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('Build ProductItem');
-    //final product = context.read<Product>();
+
     final cart = context.read<Cart>();
 
     return Consumer<Product>(
