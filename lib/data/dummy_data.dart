@@ -1,35 +1,37 @@
-import 'package:gerenciamento_estado/models/product.dart';
+import 'package:gerenciamento_estado/models/starship.dart';
 
 final dummyProducts = [
-  Product(
+  Starship(
     id: 'p1',
-    name: 'Red Shirt',
-    description: 'A red shirt - it is pretty red!',
+    name: 'Death Star',
+    description:
+        'Imperial Department of Military Research, Sienar Fleet Systems',
     price: 29.99,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+        'https://media.printables.com/media/prints/57266/images/571904_4853c69f-fcbc-4308-92b3-4b77fd510a13/thumbs/cover/1200x630/png/large_display_deathstar_57266.png',
   ),
-  Product(
+  Starship(
     id: 'p2',
-    name: 'Trousers',
-    description: 'A nice pair of trousers.',
+    name: 'CR90 corvette',
+    description: 'Corellian Engineering Corporation',
     price: 59.99,
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+        'https://static.wikia.nocookie.net/starwars/images/2/24/TantiveIV-TSWB.png/revision/latest/scale-to-width-down/1000?cb=20201021033048',
   ),
-  Product(
+  Starship(
     id: 'p3',
-    name: 'Yellow Scarf',
-    description: 'Warm and cozy - exactly what you need for the winter.',
+    name: 'Star Destroyer',
+    description: 'Kuat Drive Yards',
     price: 19.99,
-    imageUrl: 'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+    imageUrl:
+        'https://assets-prd.ignimgs.com/2022/09/12/legostardestroyer-1663023187525.jpg',
   ),
-  Product(
+  Starship(
     id: 'p4',
-    name: 'A Pan',
-    description: 'Prepare any meal you want.',
+    name: 'Millennium Falcon',
+    description: 'Corellian Engineering Corporation',
     price: 49.99,
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
+        'https://static.wikia.nocookie.net/ptstarwars/images/d/dc/Melfal.jpg/revision/latest?cb=20100418033959',
   ),
 ];

@@ -33,7 +33,7 @@ class CartPage extends StatelessWidget {
                     width: 10,
                   ),
                   Chip(
-                    backgroundColor: const Color(0xffbf1e62),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     label: Text(
                       cart.totalAmount.toString(),
                       style: TextStyle(

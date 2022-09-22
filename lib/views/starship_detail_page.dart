@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_estado/models/product.dart';
+import 'package:gerenciamento_estado/models/starship.dart';
 
-class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({
+class StarshipDetailPage extends StatelessWidget {
+  const StarshipDetailPage({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Product product =
-        ModalRoute.of(context)!.settings.arguments as Product;
+    final Starship starship =
+        ModalRoute.of(context)!.settings.arguments as Starship;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(product.name),
+        title: Text(starship.name),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -22,7 +22,7 @@ class ProductDetailPage extends StatelessWidget {
               height: 300,
               width: double.infinity,
               child: Image.network(
-                product.imageUrl,
+                starship.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
@@ -30,7 +30,7 @@ class ProductDetailPage extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'R\$ ${product.price}',
+              'R\$ ${starship.price}',
               style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             const SizedBox(
@@ -40,7 +40,7 @@ class ProductDetailPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                product.description,
+                starship.description,
                 textAlign: TextAlign.center,
               ),
             )

@@ -2,7 +2,9 @@
 
 class AppRoutes {
   static const HOME = '/';
-  static const PRODUCT_DETAIL = '/product-details';
+  static const STARSHIP_DETAIL = '/starship-details';
   static const CART = '/cart';
   static const ORDERS = '/orders';
+  static const STARSHIPS = '/starships';
+  static const STARSHIPS_FORM = '/starships-form';
 }

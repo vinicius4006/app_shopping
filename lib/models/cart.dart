@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/models/cart_item.dart';
-import 'package:gerenciamento_estado/models/product.dart';
+import 'package:gerenciamento_estado/models/starship.dart';
 
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
@@ -24,31 +24,51 @@ class Cart with ChangeNotifier {
     return total;
   }
 
-  void addItem(Product product) {
-    if (_items.containsKey(product.id)) {
+  void addItem(Starship starship) {
+    if (_items.containsKey(starship.id)) {
       _items.update(
-          product.id,
+          starship.id,
           (existingItem) => CartItem(
               id: existingItem.id,
-              productId: existingItem.productId,
+              starshipId: existingItem.starshipId,
               name: existingItem.name,
               quantity: existingItem.quantity + 1,
               price: existingItem.price));
     } else {
       _items.putIfAbsent(
-          product.id,
+          starship.id,
           () => CartItem(
               id: Random().nextDouble().toString(),
-              productId: product.id,
-              name: product.name,
+              starshipId: starship.id,
+              name: starship.name,
               quantity: 1,
-              price: product.price));
+              price: starship.price));
     }
     notifyListeners();
   }
 
-  void removeItem(String productId) {
-    _items.remove(productId);
+  void removeItem(String starshipId) {
+    _items.remove(starshipId);
+    notifyListeners();
+  }
+
+  void removeSingleItem(String starshipId) {
+    if (!_items.containsKey(starshipId)) {
+      return;
+    }
+
+    if (_items[starshipId]?.quantity == 1) {
+      _items.remove(starshipId);
+    } else {
+      _items.update(
+          starshipId,
+          (existingItem) => CartItem(
+              id: existingItem.id,
+              starshipId: existingItem.starshipId,
+              name: existingItem.name,
+              quantity: existingItem.quantity - 1,
+              price: existingItem.price));
+    }
     notifyListeners();
   }
 

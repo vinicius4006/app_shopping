@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/components/app_drawer.dart';
 import 'package:gerenciamento_estado/components/badge.dart';
-import 'package:gerenciamento_estado/components/product_grid.dart';
+import 'package:gerenciamento_estado/components/startship_grid.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
 
 // ignore: constant_identifier_names
 enum FilterOptions { Favorite, All }
 
-class ProductsOverviewPage extends StatefulWidget {
-  const ProductsOverviewPage({Key? key}) : super(key: key);
+class StarshipsOverviewPage extends StatefulWidget {
+  const StarshipsOverviewPage({Key? key}) : super(key: key);
 
   @override
-  State<ProductsOverviewPage> createState() => _ProductsOverviewPageState();
+  State<StarshipsOverviewPage> createState() => _StarshipsOverviewPageState();
 }
 
-class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
+class _StarshipsOverviewPageState extends State<StarshipsOverviewPage> {
   bool _showFavoriteOnly = false;
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Minha loja'),
+        title: const Text('Starships'),
         actions: [
           PopupMenuButton(
             icon: const Icon(Icons.more_vert),
@@ -57,7 +57,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
                   icon: const Icon(Icons.shopping_cart))),
         ],
       ),
-      body: ProductGrid(showFavoriteOnly: _showFavoriteOnly),
+      body: StarshipGrid(showFavoriteOnly: _showFavoriteOnly),
       drawer: const AppDrawer(),
     );
   }

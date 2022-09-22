@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_estado/models/product_base.dart';
+import 'package:gerenciamento_estado/models/starship_base.dart';
 
-class Product extends ProductBase with ChangeNotifier {
+class Starship extends StarshipBase with ChangeNotifier {
   final String description, imageUrl;
   bool isFavorite = false;
 
-  Product(
+  Starship(
       {required super.id,
       required super.name,
       required this.description,

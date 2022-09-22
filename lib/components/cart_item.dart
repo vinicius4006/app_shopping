@@ -10,6 +10,7 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool delete = false;
     return Dismissible(
       direction: DismissDirection.endToStart,
       background: Container(
@@ -23,8 +24,30 @@ class CartItemWidget extends StatelessWidget {
           size: 40,
         ),
       ),
+      confirmDismiss: (_) {
+        return showDialog<bool>(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                title: const Text('Tem Certeza?'),
+                content: Text('Quer remover a ${cartItem.name} do carrinho?'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                      },
+                      child: const Text('Não')),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      child: const Text('Sim'))
+                ],
+              );
+            });
+      },
       onDismissed: (_) {
-        context.read<Cart>().removeItem(cartItem.productId);
+        context.read<Cart>().removeItem(cartItem.starshipId);
       },
       key: ValueKey(cartItem.id),
       child: Card(
@@ -33,7 +56,7 @@ class CartItemWidget extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: const Color(0xffbf1e62),
+              backgroundColor: Colors.black87,
               child: Padding(
                 padding: const EdgeInsets.all(5),
                 child: FittedBox(
