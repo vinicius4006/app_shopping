@@ -16,12 +16,10 @@ class StarshipsPage extends StatelessWidget {
         title: const Text('Gerenciar Starships'),
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(AppRoutes.STARSHIPS_FORM);
-                  },
-                  icon: const Icon(Icons.add)))
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.STARSHIPS_FORM);
+              },
+              icon: const Icon(Icons.add))
         ],
       ),
       drawer: const AppDrawer(),

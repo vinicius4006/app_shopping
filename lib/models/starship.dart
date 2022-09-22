@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:gerenciamento_estado/models/starship_base.dart';
 
 class Starship extends StarshipBase with ChangeNotifier {
@@ -17,4 +18,8 @@ class Starship extends StarshipBase with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
   }
+
+  @override
+  String toString() =>
+      'Starship(id: $id, name: $name, description: $description, price: $price,image: $imageUrl, isFavorite: $isFavorite)';
 }

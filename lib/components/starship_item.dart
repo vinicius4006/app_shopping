@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/models/starship.dart';
+import 'package:gerenciamento_estado/models/starship_list.dart';
+import 'package:gerenciamento_estado/utils/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class StarshipItem extends StatelessWidget {
   final Starship starship;
@@ -17,13 +20,50 @@ class StarshipItem extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.STARSHIPS_FORM,
+                      arguments: starship);
+                },
                 icon: Icon(
                   Icons.edit,
                   color: Theme.of(context).colorScheme.primary,
                 )),
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: ((context) => AlertDialog(
+                            contentPadding: const EdgeInsets.all(10),
+                            title: Text(
+                              'Deseja realmente excluir a ${starship.name} ?',
+                              textAlign: TextAlign.center,
+                            ),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'NÃO',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      context
+                                          .read<StarshipList>()
+                                          .deleteStarship(starship.id);
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('SIM',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                              ],
+                            ),
+                          )));
+                },
                 icon: Icon(
                   Icons.delete,
                   color: Theme.of(context).errorColor,
