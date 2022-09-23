@@ -6,8 +6,8 @@ import 'package:gerenciamento_estado/models/starship.dart';
 import 'package:http/http.dart' as http;
 
 class StarshipList with ChangeNotifier {
-  final _url =
-      'https://starships-cod3r-default-rtdb.firebaseio.com/starships.json';
+  final _baseUrl =
+      'https://starships-cod3r-default-rtdb.firebaseio.com/starships';
   final List<Starship> _items = [];
 
   List<Starship> get items => [..._items];
@@ -18,7 +18,7 @@ class StarshipList with ChangeNotifier {
 
   Future<void> loadStarships() async {
     _items.clear();
-    final response = await http.get(Uri.parse(_url));
+    final response = await http.get(Uri.parse('$_baseUrl.json'));
     Map<String, dynamic> data = jsonDecode(response.body) ?? {};
     if (data != {}) {
       data.forEach((starshipId, starshipData) {
@@ -61,8 +61,8 @@ class StarshipList with ChangeNotifier {
   }
 
   Future<void> addStarship(Starship starship) async {
-    final response =
-        await http.post(Uri.parse(_url), body: jsonEncode(starship.toJson()));
+    final response = await http.post(Uri.parse('$_baseUrl.json'),
+        body: jsonEncode(starship.toJson()));
 
     final id = jsonDecode(response.body)['name'];
     _items.add(Starship(
@@ -82,6 +82,8 @@ class StarshipList with ChangeNotifier {
     int index = _items.indexWhere((s) => s.id == starship.id);
 
     if (index >= 0) {
+      await http.patch(Uri.parse('$_baseUrl/${starship.id}.json'),
+          body: jsonEncode(starship.toJson()));
       _items[index] = starship;
       notifyListeners();
     }
