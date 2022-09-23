@@ -15,15 +15,20 @@ class StarshipGrid extends StatelessWidget {
     final List<Starship> loadedProducts = context.select((StarshipList value) =>
         showFavoriteOnly ? value.favoriteItems : value.items);
 
-    return GridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: loadedProducts.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10),
-        itemBuilder: ((context, index) => ChangeNotifierProvider.value(
-            value: loadedProducts[index], child: const StarshipGridItem())));
+    return loadedProducts.isEmpty
+        ? const Center(
+            child: Text('Sem starships salvas'),
+          )
+        : GridView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: loadedProducts.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 3 / 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10),
+            itemBuilder: ((context, index) => ChangeNotifierProvider.value(
+                value: loadedProducts[index],
+                child: const StarshipGridItem())));
   }
 }

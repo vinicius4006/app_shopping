@@ -47,7 +47,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                         ),
                       ),
                       Text(
-                        '${product.quantity}x R\$ ${product.price}',
+                        '${product.quantity}x ${product.costInCredits} credits',
                         style:
                             const TextStyle(fontSize: 18, color: Colors.grey),
                       )

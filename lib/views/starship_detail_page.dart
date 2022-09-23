@@ -30,7 +30,7 @@ class StarshipDetailPage extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'R\$ ${starship.price}',
+              '${starship.costInCredits == 0 ? 'unknown' : starship.costInCredits} credits ',
               style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             const SizedBox(
@@ -40,7 +40,7 @@ class StarshipDetailPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               child: Text(
-                starship.description,
+                starship.manufacturer,
                 textAlign: TextAlign.center,
               ),
             )

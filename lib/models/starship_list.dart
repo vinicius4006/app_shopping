@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gerenciamento_estado/data/dummy_data.dart';
 import 'package:gerenciamento_estado/models/starship.dart';
+import 'package:http/http.dart' as http;
 
 class StarshipList with ChangeNotifier {
-  final List<Starship> _items = dummyProducts;
+  final _url =
+      'https://starships-cod3r-default-rtdb.firebaseio.com/starships.json';
+  final List<Starship> _items = [];
 
   List<Starship> get items => [..._items];
   List<Starship> get favoriteItems =>
@@ -13,28 +16,69 @@ class StarshipList with ChangeNotifier {
 
   int get itemsCount => _items.length;
 
-  void saveStarship(Map<String, Object> data) {
-    bool hasId = data['id'] != null;
-    final newStarship = Starship(
-        id: hasId ? data['id'] as String : Random().nextDouble().toString(),
-        name: data['name'] as String,
-        description: data['description'] as String,
-        price: data['price'] as double,
-        imageUrl: data['image'] as String);
-
-    if (hasId) {
-      updateStarship(newStarship);
-    } else {
-      addStarship(newStarship);
+  Future<void> loadStarships() async {
+    _items.clear();
+    final response = await http.get(Uri.parse(_url));
+    Map<String, dynamic> data = jsonDecode(response.body) ?? {};
+    if (data != {}) {
+      data.forEach((starshipId, starshipData) {
+        _items.add(Starship(
+            id: starshipId,
+            name: starshipData['name'],
+            manufacturer: starshipData['manufacturer'],
+            costInCredits: starshipData['cost_in_credits'],
+            size: double.parse(
+                starshipData['length'].toString().replaceAll(',', '.')),
+            model: starshipData['model'],
+            passengers: starshipData['passengers'],
+            imageUrl: starshipData['imageUrl']));
+      });
     }
-  }
 
-  void addStarship(Starship starship) {
-    _items.add(starship);
     notifyListeners();
   }
 
-  void updateStarship(Starship starship) {
+  Future<void> saveStarship(Map<String, Object> data) {
+    bool hasId = data['id'] != null;
+
+    final newStarship = Starship(
+        id: hasId ? data['id'] as String : Random().nextDouble().toString(),
+        name: data['name'] as String,
+        manufacturer: data['manufacturer'] as String,
+        costInCredits: data['cost_in_credits'] as int,
+        size: data['length'] as double,
+        model: data['model'] as String,
+        passengers: data['passengers'] as int,
+        imageUrl: data['imageUrl'] as String);
+
+    debugPrint('$newStarship');
+
+    if (hasId) {
+      return updateStarship(newStarship);
+    } else {
+      return addStarship(newStarship);
+    }
+  }
+
+  Future<void> addStarship(Starship starship) async {
+    final response =
+        await http.post(Uri.parse(_url), body: jsonEncode(starship.toJson()));
+
+    final id = jsonDecode(response.body)['name'];
+    _items.add(Starship(
+        id: id,
+        name: starship.name,
+        manufacturer: starship.manufacturer,
+        costInCredits: starship.costInCredits,
+        model: starship.model,
+        passengers: starship.passengers,
+        size: starship.size,
+        imageUrl: starship.imageUrl,
+        isFavorite: starship.isFavorite));
+    notifyListeners();
+  }
+
+  Future<void> updateStarship(Starship starship) async {
     int index = _items.indexWhere((s) => s.id == starship.id);
 
     if (index >= 0) {

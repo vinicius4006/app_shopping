@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/models/starship_base.dart';
 
 class Starship extends StarshipBase with ChangeNotifier {
-  final String description, imageUrl;
+  late final String model, imageUrl, manufacturer;
+  late final double size;
+  late final int passengers;
   bool isFavorite = false;
 
   Starship(
       {required super.id,
       required super.name,
-      required this.description,
-      required super.price,
+      required this.model,
+      required this.size,
+      required super.costInCredits,
+      required this.passengers,
+      required this.manufacturer,
       required this.imageUrl,
       this.isFavorite = false});
 
@@ -19,7 +24,22 @@ class Starship extends StarshipBase with ChangeNotifier {
     notifyListeners();
   }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+
+    data['name'] = name;
+    data['model'] = model;
+    data['cost_in_credits'] = costInCredits;
+    data['length'] = size;
+    data['passengers'] = passengers;
+    data['manufacturer'] = manufacturer;
+    data['imageUrl'] = imageUrl;
+    data['isFavorite'] = isFavorite;
+
+    return data;
+  }
+
   @override
   String toString() =>
-      'Starship(id: $id, name: $name, description: $description, price: $price,image: $imageUrl, isFavorite: $isFavorite)';
+      'Starship(manunfacturer: $manufacturer, length: $size, isFavorite: $isFavorite)';
 }

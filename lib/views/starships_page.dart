@@ -8,6 +8,10 @@ import 'package:provider/provider.dart';
 class StarshipsPage extends StatelessWidget {
   const StarshipsPage({Key? key}) : super(key: key);
 
+  Future<void> _refreshStarships(BuildContext context) {
+    return context.read<StarshipList>().loadStarships();
+  }
+
   @override
   Widget build(BuildContext context) {
     final StarshipList starships = context.watch<StarshipList>();
@@ -23,18 +27,21 @@ class StarshipsPage extends StatelessWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-            itemCount: starships.itemsCount,
-            itemBuilder: (ctx, index) => Column(
-                  children: [
-                    StarshipItem(
-                      starship: starships.items[index],
-                    ),
-                    const Divider()
-                  ],
-                )),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshStarships(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListView.builder(
+              itemCount: starships.itemsCount,
+              itemBuilder: (ctx, index) => Column(
+                    children: [
+                      StarshipItem(
+                        starship: starships.items[index],
+                      ),
+                      const Divider()
+                    ],
+                  )),
+        ),
       ),
     );
   }

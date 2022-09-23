@@ -10,7 +10,6 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool delete = false;
     return Dismissible(
       direction: DismissDirection.endToStart,
       background: Container(
@@ -61,7 +60,7 @@ class CartItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 child: FittedBox(
                   child: Text(
-                    '${cartItem.price}',
+                    '${cartItem.costInCredits}',
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
@@ -69,7 +68,7 @@ class CartItemWidget extends StatelessWidget {
             ),
             title: Text(cartItem.name),
             subtitle: Text(
-                'Total: R\$ ${(cartItem.price * cartItem.quantity).toStringAsFixed(2)}'),
+                'Total: ${(cartItem.costInCredits * cartItem.quantity).toStringAsFixed(2)} credits'),
             trailing: Text('${cartItem.quantity}x'),
           ),
         ),

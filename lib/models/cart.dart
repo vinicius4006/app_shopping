@@ -18,7 +18,7 @@ class Cart with ChangeNotifier {
   double get totalAmount {
     double total = 0.0;
     _items.forEach((key, cartItem) {
-      total += cartItem.price * cartItem.quantity;
+      total += cartItem.costInCredits * cartItem.quantity;
     });
 
     return total;
@@ -33,7 +33,7 @@ class Cart with ChangeNotifier {
               starshipId: existingItem.starshipId,
               name: existingItem.name,
               quantity: existingItem.quantity + 1,
-              price: existingItem.price));
+              costInCredits: existingItem.costInCredits));
     } else {
       _items.putIfAbsent(
           starship.id,
@@ -42,7 +42,7 @@ class Cart with ChangeNotifier {
               starshipId: starship.id,
               name: starship.name,
               quantity: 1,
-              price: starship.price));
+              costInCredits: starship.costInCredits));
     }
     notifyListeners();
   }
@@ -67,7 +67,7 @@ class Cart with ChangeNotifier {
               starshipId: existingItem.starshipId,
               name: existingItem.name,
               quantity: existingItem.quantity - 1,
-              price: existingItem.price));
+              costInCredits: existingItem.costInCredits));
     }
     notifyListeners();
   }

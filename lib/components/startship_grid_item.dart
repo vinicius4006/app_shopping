@@ -37,18 +37,26 @@ class StarshipGridItem extends StatelessWidget {
             trailing: IconButton(
                 color: Theme.of(context).errorColor,
                 onPressed: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('${starship.name} no carrinho'),
-                    duration: const Duration(seconds: 2),
-                    action: SnackBarAction(
-                        label: 'DESFAZER',
-                        textColor: Colors.white,
-                        onPressed: () {
-                          cart.removeSingleItem(starship.id);
-                        }),
-                  ));
-                  cart.addItem(starship);
+                  if (starship.costInCredits != 0) {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('${starship.name} no carrinho'),
+                      duration: const Duration(seconds: 2),
+                      action: SnackBarAction(
+                          label: 'DESFAZER',
+                          textColor: Colors.white,
+                          onPressed: () {
+                            cart.removeSingleItem(starship.id);
+                          }),
+                    ));
+                    cart.addItem(starship);
+                  } else {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('Indisponível'),
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
                 },
                 icon: const Icon(Icons.shopping_cart)),
           ),

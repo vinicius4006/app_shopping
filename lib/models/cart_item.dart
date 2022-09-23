@@ -9,5 +9,5 @@ class CartItem extends StarshipBase {
       required this.starshipId,
       required super.name,
       required this.quantity,
-      required super.price});
+      required super.costInCredits});
 }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/components/app_drawer.dart';
 import 'package:gerenciamento_estado/components/badge.dart';
 import 'package:gerenciamento_estado/components/startship_grid.dart';
+import 'package:gerenciamento_estado/models/starship_list.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
+import 'package:provider/provider.dart';
 
 // ignore: constant_identifier_names
 enum FilterOptions { Favorite, All }
@@ -16,6 +18,16 @@ class StarshipsOverviewPage extends StatefulWidget {
 
 class _StarshipsOverviewPageState extends State<StarshipsOverviewPage> {
   bool _showFavoriteOnly = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<StarshipList>().loadStarships().then((value) {
+      setState(() => _isLoading = false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     debugPrint('Build ProductsOverviewPage');
@@ -57,7 +69,11 @@ class _StarshipsOverviewPageState extends State<StarshipsOverviewPage> {
                   icon: const Icon(Icons.shopping_cart))),
         ],
       ),
-      body: StarshipGrid(showFavoriteOnly: _showFavoriteOnly),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : StarshipGrid(showFavoriteOnly: _showFavoriteOnly),
       drawer: const AppDrawer(),
     );
   }
