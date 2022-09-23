@@ -16,35 +16,63 @@ class StarshipDetailPage extends StatelessWidget {
         title: Text(starship.name),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: Image.network(
-                starship.imageUrl,
-                fit: BoxFit.cover,
+        child: SizedBox(
+          height: 600,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                height: 300,
+                width: double.infinity,
+                child: Image.network(
+                  starship.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              '${starship.costInCredits == 0 ? 'unknown' : starship.costInCredits} credits ',
-              style: const TextStyle(color: Colors.grey, fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              child: Text(
-                starship.manufacturer,
-                textAlign: TextAlign.center,
+              const SizedBox(
+                height: 10,
               ),
-            )
-          ],
+              Text(
+                '${starship.costInCredits == 0 ? 'unknown' : starship.costInCredits} credits ',
+                style: const TextStyle(color: Colors.grey, fontSize: 20),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: Text(
+                  starship.model,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: Text(
+                  starship.manufacturer,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: Text(
+                  '${starship.size}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: Text(
+                  '${starship.passengers}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

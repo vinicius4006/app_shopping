@@ -35,7 +35,7 @@ class CartPage extends StatelessWidget {
                   Chip(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     label: Text(
-                      cart.totalAmount.toString(),
+                      '${cart.totalAmount}',
                       style: TextStyle(
                           color: Theme.of(context)
                               .primaryTextTheme
@@ -43,6 +43,7 @@ class CartPage extends StatelessWidget {
                               ?.color),
                     ),
                   ),
+                  const Text(' credits'),
                   const Spacer(),
                   TextButton(
                       style: TextButton.styleFrom(
