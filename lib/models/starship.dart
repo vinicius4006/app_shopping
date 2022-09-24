@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:gerenciamento_estado/models/starship_base.dart';
@@ -24,7 +26,7 @@ class Starship extends StarshipBase with ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> toJson() {
+  String toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
 
     data['name'] = name;
@@ -36,7 +38,7 @@ class Starship extends StarshipBase with ChangeNotifier {
     data['imageUrl'] = imageUrl;
     data['isFavorite'] = isFavorite;
 
-    return data;
+    return jsonEncode(data);
   }
 
   @override

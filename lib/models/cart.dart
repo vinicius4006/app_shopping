@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class Cart with ChangeNotifier {
   int get itemsCount {
     return _items.length;
   }
+
+  DateTime get date => DateTime.now();
 
   int get totalAmount {
     int total = 0;
@@ -75,5 +78,15 @@ class Cart with ChangeNotifier {
   void clear() {
     _items = {};
     notifyListeners();
+  }
+
+  String toJson() {
+    final Map<String, dynamic> dados = <String, dynamic>{};
+
+    dados['total'] = totalAmount;
+    dados['date'] = date.toIso8601String();
+    dados['starships'] = _items.values.map((s) => s.toJson()).toList();
+
+    return jsonEncode(dados);
   }
 }

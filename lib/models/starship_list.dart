@@ -89,7 +89,7 @@ class StarshipList with ChangeNotifier {
       notifyListeners();
       final response = await http.patch(
           Uri.parse('${Constants.STARSHIP_BASE_URL}/${starship.id}.json'),
-          body: jsonEncode(starship.toJson()));
+          body: starship.toJson());
       if (response.statusCode >= 400) {
         throw HttpException(
             msg: 'Não foi possível executar', statusCode: response.statusCode);

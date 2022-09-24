@@ -3,4 +3,6 @@
 class Constants {
   static const STARSHIP_BASE_URL =
       'https://starships-cod3r-default-rtdb.firebaseio.com/starships';
+  static const ORDER_BASE_URL =
+      'https://starships-cod3r-default-rtdb.firebaseio.com/orders';
 }

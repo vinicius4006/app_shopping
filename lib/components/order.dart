@@ -33,9 +33,9 @@ class _OrderWidgetState extends State<OrderWidget> {
           if (_expanded)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-              height: widget.order.products.length * 30.0,
+              height: widget.order.starships.length * 30.0,
               child: ListView(
-                children: widget.order.products.map((product) {
+                children: widget.order.starships.map((product) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
