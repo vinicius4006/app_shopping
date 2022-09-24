@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_estado/exceptions/http_Exception.dart';
 import 'package:gerenciamento_estado/models/starship.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,6 +25,7 @@ class StarshipList with ChangeNotifier {
       data.forEach((starshipId, starshipData) {
         _items.add(Starship(
             id: starshipId,
+            isFavorite: starshipData['isFavorite'],
             name: starshipData['name'],
             manufacturer: starshipData['manufacturer'],
             costInCredits: starshipData['cost_in_credits'],
@@ -89,8 +91,25 @@ class StarshipList with ChangeNotifier {
     }
   }
 
-  void deleteStarship(String id) {
-    _items.removeWhere((s) => s.id == id);
-    notifyListeners();
+  Future<void> deleteStarship(String id) async {
+    int index = _items.indexWhere((s) => s.id == id);
+
+    if (index >= 0) {
+      final starship = _items[index];
+      _items.remove(starship);
+      notifyListeners();
+
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/$id.json'),
+      );
+
+      if (response.statusCode >= 400) {
+        _items.insert(index, starship);
+        notifyListeners();
+        throw HttpException(
+            msg: 'Não foi possível excluir o produto.',
+            statusCode: response.statusCode);
+      }
+    }
   }
 }

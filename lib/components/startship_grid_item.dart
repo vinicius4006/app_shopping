@@ -21,8 +21,10 @@ class StarshipGridItem extends StatelessWidget {
             backgroundColor: Colors.black87,
             leading: IconButton(
               color: Theme.of(context).errorColor,
-              onPressed: () {
-                starship.toggleFavorite();
+              onPressed: () async {
+                try {
+                  await starship.toggleFavorite(context);
+                } catch (error) {}
               },
               icon: Icon(
                   starship.isFavorite ? Icons.favorite : Icons.favorite_border),

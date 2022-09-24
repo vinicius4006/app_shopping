@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:gerenciamento_estado/models/starship_base.dart';
+import 'package:gerenciamento_estado/models/starship_list.dart';
+import 'package:provider/provider.dart';
 
 class Starship extends StarshipBase with ChangeNotifier {
   late final String model, imageUrl, manufacturer;
@@ -19,9 +21,20 @@ class Starship extends StarshipBase with ChangeNotifier {
       required this.imageUrl,
       this.isFavorite = false});
 
-  void toggleFavorite() {
+  Future<void> toggleFavorite(BuildContext context) async {
     isFavorite = !isFavorite;
     notifyListeners();
+
+    await context.read<StarshipList>().updateStarship(Starship(
+        id: id,
+        name: name,
+        model: model,
+        size: size,
+        costInCredits: costInCredits,
+        passengers: passengers,
+        manufacturer: manufacturer,
+        imageUrl: imageUrl,
+        isFavorite: isFavorite));
   }
 
   Map<String, dynamic> toJson() {

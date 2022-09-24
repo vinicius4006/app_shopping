@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_estado/exceptions/http_Exception.dart';
 import 'package:gerenciamento_estado/models/starship.dart';
-import 'package:gerenciamento_estado/models/starship_list.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
 import 'package:provider/provider.dart';
+
+import '../models/starship_list.dart';
 
 class StarshipItem extends StatelessWidget {
   final Starship starship;
@@ -10,6 +12,7 @@ class StarshipItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final msg = ScaffoldMessenger.of(context);
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(starship.imageUrl),
@@ -51,11 +54,17 @@ class StarshipItem extends StatelessWidget {
                                           fontWeight: FontWeight.bold),
                                     )),
                                 TextButton(
-                                    onPressed: () {
-                                      context
-                                          .read<StarshipList>()
-                                          .deleteStarship(starship.id);
+                                    onPressed: () async {
                                       Navigator.pop(context);
+                                      try {
+                                        await context
+                                            .read<StarshipList>()
+                                            .deleteStarship(starship.id);
+                                      } on HttpException catch (error) {
+                                        msg.hideCurrentSnackBar();
+                                        msg.showSnackBar(SnackBar(
+                                            content: Text(error.toString())));
+                                      }
                                     },
                                     child: const Text('SIM',
                                         style: TextStyle(
