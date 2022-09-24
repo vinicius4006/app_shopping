@@ -4,11 +4,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/exceptions/http_Exception.dart';
 import 'package:gerenciamento_estado/models/starship.dart';
+import 'package:gerenciamento_estado/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class StarshipList with ChangeNotifier {
-  final _baseUrl =
-      'https://starships-cod3r-default-rtdb.firebaseio.com/starships';
   final List<Starship> _items = [];
 
   List<Starship> get items => [..._items];
@@ -19,7 +18,8 @@ class StarshipList with ChangeNotifier {
 
   Future<void> loadStarships() async {
     _items.clear();
-    final response = await http.get(Uri.parse('$_baseUrl.json'));
+    final response =
+        await http.get(Uri.parse('${Constants.STARSHIP_BASE_URL}.json'));
     Map<String, dynamic> data = jsonDecode(response.body) ?? {};
     if (data != {}) {
       data.forEach((starshipId, starshipData) {
@@ -63,7 +63,8 @@ class StarshipList with ChangeNotifier {
   }
 
   Future<void> addStarship(Starship starship) async {
-    final response = await http.post(Uri.parse('$_baseUrl.json'),
+    final response = await http.post(
+        Uri.parse('${Constants.STARSHIP_BASE_URL}.json'),
         body: jsonEncode(starship.toJson()));
 
     final id = jsonDecode(response.body)['name'];
@@ -87,7 +88,7 @@ class StarshipList with ChangeNotifier {
       _items[index] = starship;
       notifyListeners();
       final response = await http.patch(
-          Uri.parse('$_baseUrl/${starship.id}.json'),
+          Uri.parse('${Constants.STARSHIP_BASE_URL}/${starship.id}.json'),
           body: jsonEncode(starship.toJson()));
       if (response.statusCode >= 400) {
         throw HttpException(
@@ -105,7 +106,7 @@ class StarshipList with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        Uri.parse('$_baseUrl/$id.json'),
+        Uri.parse('${Constants.STARSHIP_BASE_URL}/$id.json'),
       );
 
       if (response.statusCode >= 400) {
