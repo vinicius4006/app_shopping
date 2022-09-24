@@ -84,10 +84,15 @@ class StarshipList with ChangeNotifier {
     int index = _items.indexWhere((s) => s.id == starship.id);
 
     if (index >= 0) {
-      await http.patch(Uri.parse('$_baseUrl/${starship.id}.json'),
-          body: jsonEncode(starship.toJson()));
       _items[index] = starship;
       notifyListeners();
+      final response = await http.patch(
+          Uri.parse('$_baseUrl/${starship.id}.json'),
+          body: jsonEncode(starship.toJson()));
+      if (response.statusCode >= 400) {
+        throw HttpException(
+            msg: 'Não foi possível executar', statusCode: response.statusCode);
+      }
     }
   }
 
