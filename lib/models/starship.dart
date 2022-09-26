@@ -21,7 +21,7 @@ class Starship extends StarshipBase with ChangeNotifier {
       required this.imageUrl,
       this.isFavorite = false});
 
-  void toggleFavorite() async {
+  void toggleFavorite() {
     isFavorite = !isFavorite;
     notifyListeners();
   }
@@ -39,6 +39,18 @@ class Starship extends StarshipBase with ChangeNotifier {
     data['isFavorite'] = isFavorite;
 
     return jsonEncode(data);
+  }
+
+  static Starship fromJson(Map<String, dynamic> json) {
+    return Starship(
+        id: json['starship_id'],
+        name: json['name'],
+        model: '',
+        size: 0,
+        costInCredits: json['cost_in_credits'],
+        passengers: json['quantity'],
+        manufacturer: '',
+        imageUrl: '');
   }
 
   @override

@@ -15,6 +15,7 @@ class CartItem extends StarshipBase {
 
   String toJson() {
     final Map<String, dynamic> dados = <String, dynamic>{};
+    dados['id'] = id;
     dados['starship_id'] = starshipId;
     dados['name'] = name;
     dados['quantity'] = quantity;

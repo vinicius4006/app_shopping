@@ -17,8 +17,8 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.stream),
             title: const Text('Starships'),
-            onTap: () =>
-                Navigator.of(context).pushReplacementNamed(AppRoutes.HOME),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(AppRoutes.AUTH_OR_HOME),
           ),
           const Divider(),
           ListTile(

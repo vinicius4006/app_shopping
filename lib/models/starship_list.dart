@@ -8,18 +8,21 @@ import 'package:gerenciamento_estado/utils/constants.dart';
 import 'package:http/http.dart' as http;
 
 class StarshipList with ChangeNotifier {
-  final List<Starship> _items = [];
+  final String _token;
+  final List<Starship> _items;
 
   List<Starship> get items => [..._items];
   List<Starship> get favoriteItems =>
       [..._items].where((prod) => prod.isFavorite).toList();
 
+  StarshipList(this._token, this._items);
+
   int get itemsCount => _items.length;
 
   Future<void> loadStarships() async {
     _items.clear();
-    final response =
-        await http.get(Uri.parse('${Constants.STARSHIP_BASE_URL}.json'));
+    final response = await http
+        .get(Uri.parse('${Constants.STARSHIP_BASE_URL}.json?auth=...'));
     Map<String, dynamic> data = jsonDecode(response.body) ?? {};
     if (data != {}) {
       data.forEach((starshipId, starshipData) {
