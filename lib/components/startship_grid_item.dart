@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/exceptions/http_Exception.dart';
+import 'package:gerenciamento_estado/models/auth.dart';
 import 'package:gerenciamento_estado/models/cart.dart';
 import 'package:gerenciamento_estado/models/starship.dart';
-import 'package:gerenciamento_estado/models/starship_list.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +15,7 @@ class StarshipGridItem extends StatelessWidget {
 
     final cart = context.read<Cart>();
     final msg = ScaffoldMessenger.of(context);
+    final auth = context.read<Auth>();
     return Consumer<Starship>(
       builder: (context, starship, child) => ClipRRect(
         borderRadius: BorderRadius.circular(10),
@@ -24,11 +25,9 @@ class StarshipGridItem extends StatelessWidget {
             leading: IconButton(
               color: Theme.of(context).errorColor,
               onPressed: () async {
-                starship.toggleFavorite();
                 try {
-                  await context.read<StarshipList>().updateStarship(starship);
+                  await starship.toggleFavorite(auth.token!, auth.userId!);
                 } on HttpException catch (error) {
-                  starship.toggleFavorite();
                   msg.hideCurrentSnackBar();
                   msg.showSnackBar(SnackBar(content: Text(error.toString())));
                 }

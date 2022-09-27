@@ -10,6 +10,7 @@ class AuthOrHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Auth auth = context.watch<Auth>();
+
     return auth.isAuth ? const StarshipsOverviewPage() : const AuthPage();
   }
 }

@@ -10,25 +10,30 @@ import 'package:http/http.dart' as http;
 class StarshipList with ChangeNotifier {
   final String _token;
   final List<Starship> _items;
+  final String _userId;
 
   List<Starship> get items => [..._items];
   List<Starship> get favoriteItems =>
       [..._items].where((prod) => prod.isFavorite).toList();
 
-  StarshipList(this._token, this._items);
+  StarshipList([this._token = '', this._items = const [], this._userId = '']);
 
   int get itemsCount => _items.length;
 
   Future<void> loadStarships() async {
     _items.clear();
     final response = await http
-        .get(Uri.parse('${Constants.STARSHIP_BASE_URL}.json?auth=...'));
+        .get(Uri.parse('${Constants.STARSHIP_BASE_URL}.json?auth=$_token'));
+    final favResponse = await http.get(Uri.parse(
+        '${Constants.USER_FAVORITES_URL}/$_userId.json?auth=$_token'));
     Map<String, dynamic> data = jsonDecode(response.body) ?? {};
+    Map<String, dynamic> favData = jsonDecode(favResponse.body) ?? {};
+    debugPrint('$favData');
     if (data != {}) {
       data.forEach((starshipId, starshipData) {
+        final isFavorite = favData[starshipId] ?? false;
         _items.add(Starship(
             id: starshipId,
-            isFavorite: starshipData['isFavorite'],
             name: starshipData['name'],
             manufacturer: starshipData['manufacturer'],
             costInCredits: starshipData['cost_in_credits'],
@@ -36,7 +41,10 @@ class StarshipList with ChangeNotifier {
                 starshipData['length'].toString().replaceAll(',', '.')),
             model: starshipData['model'],
             passengers: starshipData['passengers'],
-            imageUrl: starshipData['imageUrl']));
+            imageUrl: starshipData['imageUrl'],
+            isFavorite: isFavorite.runtimeType != bool
+                ? isFavorite['isFavorite']
+                : false));
       });
     }
 
@@ -67,20 +75,20 @@ class StarshipList with ChangeNotifier {
 
   Future<void> addStarship(Starship starship) async {
     final response = await http.post(
-        Uri.parse('${Constants.STARSHIP_BASE_URL}.json'),
+        Uri.parse('${Constants.STARSHIP_BASE_URL}.json?auth=$_token'),
         body: jsonEncode(starship.toJson()));
 
     final id = jsonDecode(response.body)['name'];
     _items.add(Starship(
-        id: id,
-        name: starship.name,
-        manufacturer: starship.manufacturer,
-        costInCredits: starship.costInCredits,
-        model: starship.model,
-        passengers: starship.passengers,
-        size: starship.size,
-        imageUrl: starship.imageUrl,
-        isFavorite: starship.isFavorite));
+      id: id,
+      name: starship.name,
+      manufacturer: starship.manufacturer,
+      costInCredits: starship.costInCredits,
+      model: starship.model,
+      passengers: starship.passengers,
+      size: starship.size,
+      imageUrl: starship.imageUrl,
+    ));
     notifyListeners();
   }
 
@@ -91,7 +99,8 @@ class StarshipList with ChangeNotifier {
       _items[index] = starship;
       notifyListeners();
       final response = await http.patch(
-          Uri.parse('${Constants.STARSHIP_BASE_URL}/${starship.id}.json'),
+          Uri.parse(
+              '${Constants.STARSHIP_BASE_URL}/${starship.id}.json?auth=$_token'),
           body: starship.toJson());
       if (response.statusCode >= 400) {
         throw HttpException(
@@ -109,7 +118,7 @@ class StarshipList with ChangeNotifier {
       notifyListeners();
 
       final response = await http.delete(
-        Uri.parse('${Constants.STARSHIP_BASE_URL}/$id.json'),
+        Uri.parse('${Constants.STARSHIP_BASE_URL}/$id.json?auth=$_token'),
       );
 
       if (response.statusCode >= 400) {

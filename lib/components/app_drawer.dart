@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gerenciamento_estado/models/auth.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -33,6 +35,16 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Gerenciar Starships'),
             onTap: () =>
                 Navigator.of(context).pushReplacementNamed(AppRoutes.STARSHIPS),
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () {
+              context.read<Auth>().logout();
+              Navigator.of(context)
+                  .pushReplacementNamed(AppRoutes.AUTH_OR_HOME);
+            },
           ),
         ],
       ),

@@ -7,6 +7,7 @@ import 'package:gerenciamento_estado/utils/app_routes.dart';
 import 'package:gerenciamento_estado/views/auth_or_home_page.dart';
 import 'package:gerenciamento_estado/views/cart_page.dart';
 import 'package:gerenciamento_estado/views/orders_page.dart';
+import 'package:gerenciamento_estado/views/splash_screen.dart';
 import 'package:gerenciamento_estado/views/starship_detail_page.dart';
 import 'package:gerenciamento_estado/views/starship_form_page.dart';
 import 'package:gerenciamento_estado/views/starships_page.dart';
@@ -25,12 +26,16 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => Auth()),
         ChangeNotifierProxyProvider<Auth, StarshipList>(
-          create: (_) => StarshipList('', []),
-          update: ((context, auth, previous) =>
-              StarshipList(auth.token ?? '', previous?.items ?? [])),
+          create: (_) => StarshipList(),
+          update: ((context, auth, previous) => StarshipList(
+              auth.token ?? '', previous?.items ?? [], auth.userId ?? '')),
         ),
         ChangeNotifierProvider(create: (_) => Cart()),
-        ChangeNotifierProvider(create: (_) => OrderList()),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList(),
+          update: (context, auth, previous) => OrderList(
+              auth.token ?? '', auth.userId ?? '', previous?.items ?? []),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,6 +55,7 @@ class MyApp extends StatelessWidget {
                 onSurface: Colors.black87),
             fontFamily: 'Lato'),
         routes: {
+          AppRoutes.SPLASH_SCREEN: (_) => const SplashScreen(),
           AppRoutes.AUTH_OR_HOME: (_) => const AuthOrHomePage(),
           AppRoutes.STARSHIP_DETAIL: (_) => const StarshipDetailPage(),
           AppRoutes.CART: (_) => const CartPage(),

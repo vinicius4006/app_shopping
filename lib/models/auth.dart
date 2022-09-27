@@ -1,14 +1,18 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gerenciamento_estado/exceptions/auth_exception.dart';
+import 'package:gerenciamento_estado/exceptions/http_exception.dart';
+import 'package:gerenciamento_estado/utils/user_manager.dart';
 import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
   String? _token;
   String? _email;
-  String? _uid;
+  String? _userId;
   DateTime? _expiryDate;
+  Timer? _logoutTimer;
 
   bool get isAuth {
     final isValid = _expiryDate?.isAfter(DateTime.now()) ?? false;
@@ -19,7 +23,22 @@ class Auth with ChangeNotifier {
 
   String? get email => isAuth ? _email : null;
 
-  String? get uid => isAuth ? _uid : null;
+  String? get userId => isAuth ? _userId : null;
+
+  Future<void> checkStorageLogin() async {
+    try {
+      final dataSave = await UserManager.isAuth;
+      if (dataSave['token'] != '') {
+        _token = dataSave['token'];
+        _email = dataSave['email'];
+        _userId = dataSave['userId'];
+        _expiryDate = DateTime.parse(dataSave['expiryDate']);
+        notifyListeners();
+      }
+    } on HttpException {
+      throw HttpException(msg: 'Erro no login', statusCode: 0);
+    }
+  }
 
   Future<void> _authenticate(
       String email, String password, String urlFragment) async {
@@ -40,13 +59,15 @@ class Auth with ChangeNotifier {
     } else {
       _token = body['idToken'];
       _email = body['email'];
-      _uid = body['localId'];
+      _userId = body['localId'];
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(body['expiresIn']),
         ),
       );
+      UserManager.writeAuth(_token!, _userId!, _email!, _expiryDate.toString());
     }
+    _autoLogout();
     notifyListeners();
   }
 
@@ -56,5 +77,27 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password, 'signInWithPassword');
+  }
+
+  void logout() {
+    _token = null;
+    _email = null;
+    _userId = null;
+    _expiryDate = null;
+    _clearLogoutTimer();
+    UserManager.removeAuth();
+    notifyListeners();
+  }
+
+  void _clearLogoutTimer() {
+    _logoutTimer?.cancel();
+    _logoutTimer = null;
+  }
+
+  void _autoLogout() {
+    _clearLogoutTimer();
+    final timeToLogout = _expiryDate?.difference(DateTime.now()).inSeconds;
+
+    _logoutTimer = Timer(Duration(seconds: timeToLogout ?? 0), logout);
   }
 }
