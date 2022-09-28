@@ -4,6 +4,7 @@ import 'package:gerenciamento_estado/models/cart.dart';
 import 'package:gerenciamento_estado/models/order_list.dart';
 import 'package:gerenciamento_estado/models/starship_list.dart';
 import 'package:gerenciamento_estado/utils/app_routes.dart';
+import 'package:gerenciamento_estado/utils/custom_route.dart';
 import 'package:gerenciamento_estado/views/auth_or_home_page.dart';
 import 'package:gerenciamento_estado/views/cart_page.dart';
 import 'package:gerenciamento_estado/views/orders_page.dart';
@@ -41,6 +42,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Starships',
         theme: ThemeData(
+            pageTransitionsTheme: PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android: CustomPageTransitionsBuilder(),
+                TargetPlatform.iOS: CustomPageTransitionsBuilder()
+              },
+            ),
             colorScheme: const ColorScheme(
                 brightness: Brightness.light,
                 primary: Color.fromARGB(203, 0, 0, 0),

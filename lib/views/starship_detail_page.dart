@@ -11,69 +11,87 @@ class StarshipDetailPage extends StatelessWidget {
     final Starship starship =
         ModalRoute.of(context)!.settings.arguments as Starship;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(starship.name),
-      ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: 600,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                height: 300,
-                width: double.infinity,
-                child: Image.network(
-                  starship.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(starship.name),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Hero(
+                    tag: starship.id,
+                    child: Image.network(
+                      starship.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const DecoratedBox(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment(0, 0.8),
+                              end: Alignment(0, 0),
+                              colors: [
+                        Color.fromARGB(153, 105, 80, 8),
+                        Color.fromRGBO(0, 0, 0, 0)
+                      ])))
+                ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                '${starship.costInCredits == 0 ? 'unknown' : starship.costInCredits} credits ',
-                style: const TextStyle(color: Colors.grey, fontSize: 20),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                width: double.infinity,
-                child: Text(
-                  starship.model,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                width: double.infinity,
-                child: Text(
-                  starship.manufacturer,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                width: double.infinity,
-                child: Text(
-                  '${starship.size}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                width: double.infinity,
-                child: Text(
-                  '${starship.passengers}',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              '${starship.costInCredits == 0 ? 'unknown' : starship.costInCredits} credits ',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey, fontSize: 20),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                starship.model,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                starship.manufacturer,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                '${starship.size}',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              width: double.infinity,
+              child: Text(
+                '${starship.passengers}',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(
+              height: 1000,
+            ),
+            const Text('OPA')
+          ]))
+        ],
       ),
     );
   }
